@@ -31,7 +31,7 @@
 <script>
 // Official launch: 2026-11-04 15:00 Pacific Daylight Time = 2026-11-04 23:00 UTC = 2026-11-05 00:00 Central European Time.
 // The deadline is displayed in each visitor's local time zone.
-const targetDate = new Date('2026-11-05T00:00:00+01:00');
+const targetDate = new Date('2026-11-04T23:00:00Z');
 const target = targetDate.getTime();
 document.getElementById('target-local').textContent = new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'short', timeZoneName: 'short' }).format(targetDate);
 const pad = n => String(n).padStart(2,'0');
