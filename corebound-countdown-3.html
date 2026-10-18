@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111018">
+<title>Corebound — Countdown</title>
+<style>
+:root{color-scheme:dark;--bg:#111018;--panel:#1b1924;--red:#c43b42;--gold:#e8bd77;--muted:#b6b0c2;--line:#38313e}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#492027 0%,#211820 34%,var(--bg) 72%);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#f8f2f2}
+.wrap{width:min(900px,100%);text-align:center}.sigil{width:76px;height:76px;margin:0 auto 18px;border:1px solid #9c4147;border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:34px;box-shadow:0 0 42px #c43b4229;background:#17131b}
+.kicker{letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--gold);font-weight:700}.title{font-size:clamp(38px,8vw,76px);line-height:1;margin:14px 0 14px;letter-spacing:.04em;text-transform:uppercase;text-shadow:0 3px 24px #0008}.subtitle{color:var(--muted);font-size:clamp(15px,2.5vw,19px);margin:0 auto 30px;max-width:600px}.rule{height:1px;width:min(460px,80%);margin:0 auto 30px;background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--red),transparent)}
+.timer{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:760px;margin:0 auto 28px}.unit{background:linear-gradient(180deg,#24202b,#17151d);border:1px solid var(--line);border-top:2px solid var(--red);border-radius:12px;padding:clamp(15px,3vw,28px) 8px 18px;box-shadow:0 18px 45px #0002}.num{font-variant-numeric:tabular-nums;font-size:clamp(34px,7vw,64px);font-weight:750;line-height:1.1;letter-spacing:-.04em}.label{margin-top:10px;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}.target{color:var(--gold);font-weight:650}.note{font-size:13px;color:var(--muted);margin-top:26px}.footer{margin-top:35px;font-size:12px;letter-spacing:.18em;color:#807989;text-transform:uppercase}.done{font-size:clamp(24px,5vw,40px);color:var(--gold);font-weight:750}.hide{display:none!important}
+@media(max-width:480px){body{padding:18px}.timer{gap:7px}.unit{padding:16px 4px 13px;border-radius:9px}.label{font-size:9px;letter-spacing:.12em}.sigil{width:62px;height:62px;font-size:28px}}
+</style></head>
+<body><main class="wrap">
+<div class="sigil" aria-hidden="true">⚔</div>
+<div class="kicker">Corebound presents</div>
+<h1 class="title">WoW: Forever Release</h1>
+<p class="subtitle">World of Warcraft: Forever launches soon. Prepare your characters and get ready to begin a new adventure with Corebound.</p>
+<div class="rule"></div>
+<div id="timer" class="timer" role="timer" aria-label="Time remaining">
+ <section class="unit"><div class="num" id="days">000</div><div class="label">Days</div></section>
+ <section class="unit"><div class="num" id="hours">00</div><div class="label">Hours</div></section>
+ <section class="unit"><div class="num" id="minutes">00</div><div class="label">Minutes</div></section>
+ <section class="unit"><div class="num" id="seconds">00</div><div class="label">Seconds</div></section>
+</div>
+<div id="finished" class="done hide">The time has come. For Corebound!</div>
+<div class="target" id="target-local">November 5, 2026 · 00:00</div>
+<p class="note">Shown in your local time zone · The countdown ends at the same moment for everyone.</p>
+</main>
+<script>
+// Official launch: 2026-11-04 15:00 Pacific Daylight Time = 2026-11-04 23:00 UTC = 2026-11-05 00:00 Central European Time.
+// The deadline is displayed in each visitor's local time zone.
+const targetDate = new Date('2026-11-05T00:00:00+01:00');
+const target = targetDate.getTime();
+document.getElementById('target-local').textContent = new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'short', timeZoneName: 'short' }).format(targetDate);
+const pad = n => String(n).padStart(2,'0');
+function update(){
+ const remaining = target - Date.now();
+ if(remaining <= 0){ document.getElementById('timer').classList.add('hide'); document.getElementById('finished').classList.remove('hide'); return; }
+ const total = Math.floor(remaining/1000);
+ document.getElementById('days').textContent = String(Math.floor(total/86400)).padStart(3,'0');
+ document.getElementById('hours').textContent = pad(Math.floor((total%86400)/3600));
+ document.getElementById('minutes').textContent = pad(Math.floor((total%3600)/60));
+ document.getElementById('seconds').textContent = pad(total%60);
+}
+update(); setInterval(update,250);
+</script></body></html>
